@@ -1,84 +1,75 @@
-# Code Challenge
-You have 48 hours to build a simple RESTful API. The API must be written in Node.js, and you may use any tools that you would like (frameworks, packages, etc.).
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+</p>
 
-- All responses should be JSON
-- All requests should be JSON
+[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
+[travis-url]: https://travis-ci.org/nestjs/nest
+[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
+[linux-url]: https://travis-ci.org/nestjs/nest
+  
+  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
+<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
+<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
+<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
+<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
+  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-Additionally, you will design a React frontend to display data from the API.
+## Description
 
-## Description of Application
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-The application consists of **users** and **products**.
+## Installation
 
-### Users
+```bash
+$ npm install
+```
 
-Each user must have, but is not limited to:
+## Running the app
 
-- ID
-- First Name
-- Last Name
-- Email (unique)
+```bash
+# development
+$ npm run start
 
-**Please note:**
+# watch mode
+$ npm run start:dev
 
-- These users are the only users that are able to make requests via the API.
-- User creation/maintenance is not done through the API (see Database section below).
-- Users can own many products
+# production mode
+$ npm run start:prod
+```
 
-### Products
+## Test
 
-Each product must have, but is not limited to:
+```bash
+# unit tests
+$ npm run test
 
-- ID
-- Name
-- Description
-- Price
-- Image
+# e2e tests
+$ npm run test:e2e
 
-### Database
+# test coverage
+$ npm run test:cov
+```
 
-- Postgres
-- All tables in the database must be created programatically
-- The user table should be seeded with five (5) users
+## Support
 
-### Authentication
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-You must implement an authentication system so that the API knows which of the users is making the request. All requests should ensure that an authorized user is making the request. In the event of an unauthorized user, an error should be thrown.
+## Stay in touch
 
-### Requests
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-The following requests should be implemented:
+## License
 
-- Add product
-    - All fields required except ID and image
-- Update product
-    - All fields required except image
-- Delete product
-- Get product
-- Upload product image
-- Get list of all products
-- Attach product to requesting user
-- Remove product from requesting user
-- List products attached to requesting user
-
-### Frontend
-
-Display a list of users with pagination. Additionally display the products a user owns in anyway you see fit.
-
-Please note: The frontend does NOT need to be able to create, edit, or delete data.
-
-### Tests
-
-You should write tests to back up your code. You are free to use any testing tools or frameworks you like.
-
-## Completion
-
-When you are finished (or out of time) you will push up the application to a git repo. Then please notify Thomas Kane via email (thomas@pumpjackdataworks.com) with the subject Pumpjack Code Challenge and the link to the github repo. Please include:
-
-- Instructions on how to create and seed database tables
-- Instructions on how authentication works
-- Anything else you think Thomas should know to run the application (if anything)
-
-Thomas is available for any questions you may have via email at thomas@pumpjackdataworks.com.
-
-![Good Luck](https://media.giphy.com/media/3ohfFopqHDT7vcMM2A/giphy.gif)
+  Nest is [MIT licensed](LICENSE).

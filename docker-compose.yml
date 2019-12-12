@@ -1,0 +1,33 @@
+version: "3"
+services:
+    db:
+        image: "postgres"
+        restart: unless-stopped
+        container_name: "db"
+        environment:
+            - POSTGRES_USER=${DB_ADMIN_USER}
+            - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD}
+            - POSTGRES_DB=${DB_NAME}
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./db/postgres-data:/var/lib/postgresql/data
+    server:
+        build:
+            context: ./server
+        restart: unless-stopped
+        command: bash -c "npm i --quite && npm run start:${SERVER_ENV}"
+        environment: 
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_ADMIN_USER}
+            - DB_PASSWORD=${DB_ADMIN_PASSWORD}
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./server/:/usr/app/
+        depends_on:
+            - db
+        links: 
+            - db
