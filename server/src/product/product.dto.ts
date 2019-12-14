@@ -1,4 +1,5 @@
 import { IsString, IsNumber } from 'class-validator'
+import { UserEntity } from 'src/user/user.entity';
 
 export class ProductDTO {
     @IsString()
@@ -9,4 +10,6 @@ export class ProductDTO {
     
     @IsNumber()
     price: number;
+
+    owner?: UserEntity;
 }

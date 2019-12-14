@@ -24,7 +24,7 @@ export class UserEntity {
     @Column('text')
     password: string;
 
-    @OneToMany(type => ProductEntity, product => product.owner)
+    @OneToMany(type => ProductEntity, product => product.owner, { cascade: true })
     products: ProductEntity[];
 
     @BeforeInsert()
@@ -33,8 +33,13 @@ export class UserEntity {
     } 
 
     toResponseObject(showToken: boolean = true) {
-        const {id, email, firstName, lastName, products, token} = this;
-        const responseObject: UserResponseObject = {id, email, firstName, lastName, products};
+        const {id, email, firstName, lastName, token} = this;
+        const responseObject: UserResponseObject = {id, email, firstName, lastName};
+        
+        if (this.products) {
+            responseObject.products = this.products;
+        }
+
         if (showToken) {
             responseObject.token = token;
         }

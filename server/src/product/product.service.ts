@@ -11,8 +11,16 @@ export class ProductService {
         private productRepository: Repository<ProductEntity>
         ) {}
 
+    private toResponseObject(product: ProductEntity) {
+        if (!product.owner) {
+            return product;
+        }
+        return {...product, owner: product.owner.toResponseObject(false)}
+    }
+
     async showAll() {
-        return await this.productRepository.find();
+        const products = await this.productRepository.find({relations: ['owner']});
+        return products.map(product => this.toResponseObject(product));
     }
 
     async create(data: ProductDTO) {
@@ -22,20 +30,30 @@ export class ProductService {
     }
 
     async get(id: string) {
-        const product = await this.productRepository.findOne({ where: { id } });
+        const product = await this.productRepository.findOne({ 
+            where: { id }, 
+            relations: ['owner']
+        });
         if (!product) {
             throw new HttpException('Not found', HttpStatus.NOT_FOUND);
         } 
-        return product;
+        return this.toResponseObject(product);
     }
 
     async update(id: string, data: Partial<ProductDTO>) {
-        const product = await this.productRepository.findOne({ where: { id } });
+        if (data.owner) {
+            throw new HttpException('Owner cannot be updated through this call', HttpStatus.FORBIDDEN);
+        }
+        let product = await this.productRepository.findOne({ where: { id } });
         if (!product) {
             throw new HttpException('Not found', HttpStatus.NOT_FOUND);
         }
         await this.productRepository.update({ id }, data);
-        return await this.productRepository.findOne({ id });
+        product = await this.productRepository.findOne({ 
+            where: { id },
+            relations: ['owner'] 
+        });
+        return this.toResponseObject(product);
     }
 
     async destroy(id: string) {
