@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Logger } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,10 +16,28 @@ export class UserService {
             where: { email: data.email },
         });
         if (!userExist) {
-            const users = await this.userRepository.create(data);
-            await this.userRepository.save(users);
+            let user = await this.userRepository.create(data);
+            user = await this.userRepository.save(user);
+            Logger.log(`User ${user.firstName} ${user.lastName} created`, 'UserService: create()');
         } else {
-            throw new HttpException('User already exist', HttpStatus.BAD_REQUEST);
-        }   
+            Logger.error('User already exist', '','UserService: create()');
+        }  
+    }
+
+    async showAll() {
+        const users = await this.userRepository.find();
+        return users.map(user => user.toResponseObject(false));
+    }
+
+    async login(data: UserDTO) {
+        const {email, password } = data
+        let user = await this.userRepository.findOne({
+            where: { email: data.email },
+        });
+        if (!user || !(await user.comparePassword(password))) {
+            throw new HttpException('Invalid username/password', HttpStatus.BAD_REQUEST);
+        }
+
+        return user.toResponseObject();
     }
 }

@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 import { ProductDTO } from './product.dto';
 import { ValidationPipe } from '../shared/validation.pipe';
 
-@Controller('product')
+@Controller('api/product')
 export class ProductController {
     constructor(private productService: ProductService) {}
 

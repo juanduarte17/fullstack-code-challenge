@@ -23,6 +23,7 @@ services:
             - DB_NAME=${DB_NAME}
             - DB_USER=${DB_ADMIN_USER}
             - DB_PASSWORD=${DB_ADMIN_PASSWORD}
+            - SECRET=${SECRET}
         ports:
             - "3000:3000"
         volumes:
