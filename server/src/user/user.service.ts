@@ -49,6 +49,11 @@ export class UserService {
             { where: { id: productID },
             relations: ['owner']
         });
+
+        if (!product) {
+            throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+        } 
+
         if (product.owner) {
             throw new HttpException('Product is already owned', HttpStatus.FORBIDDEN);
         }
@@ -71,6 +76,10 @@ export class UserService {
             { where: { id: productID },
             relations: ['owner']
         });
+
+        if (!product.owner) {
+            throw new HttpException('Product not owned', HttpStatus.NOT_FOUND);
+        } 
 
         if (userID !== product.owner.id) {
             throw new HttpException('Used logged in does not own this product', HttpStatus.FORBIDDEN);

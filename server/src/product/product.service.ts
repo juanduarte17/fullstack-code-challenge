@@ -35,7 +35,7 @@ export class ProductService {
             relations: ['owner']
         });
         if (!product) {
-            throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+            throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
         } 
         return this.toResponseObject(product);
     }
@@ -46,7 +46,7 @@ export class ProductService {
         }
         let product = await this.productRepository.findOne({ where: { id } });
         if (!product) {
-            throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+            throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
         }
         await this.productRepository.update({ id }, data);
         product = await this.productRepository.findOne({ 
@@ -59,7 +59,7 @@ export class ProductService {
     async destroy(id: string) {
         const product = await this.productRepository.findOne({ where: { id } });
         if (!product) {
-            throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+            throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
         }
         await this.productRepository.delete({ id });
         return { deleted: true };
