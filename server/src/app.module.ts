@@ -6,6 +6,9 @@ import { UserEntity } from './user/user.entity';
 import { ProductEntity } from './product/product.entity';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
+import { HttpErrorFilter } from './shared/http-error.filter';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './shared/logging.interceptor';
 
 @Module({
   imports: [
@@ -24,6 +27,16 @@ import { UserModule } from './user/user.module';
     UserModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    AppService
+  ],
 })
 export class AppModule {}
