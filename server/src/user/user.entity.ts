@@ -6,7 +6,10 @@ export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @PrimaryColumn('text')
+    @Column({
+        type: 'text',
+        unique: true,
+    })
     email: string;
 
     @Column('text')

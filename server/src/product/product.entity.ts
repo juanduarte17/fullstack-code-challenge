@@ -12,10 +12,13 @@ export class ProductEntity {
     @Column('text')
     description: string;
 
-    @Column('int')
+    @Column('numeric')
     price: number;
 
-    @Column('bytea')
+    @Column({
+        type: 'bytea',
+        nullable: true
+    })
     image: string;
 
     @ManyToOne(type => UserEntity, user => user.products)

@@ -11,7 +11,7 @@ export class UserService {
         private userRepository: Repository<UserEntity>
         ) {}
     
-    async create(data: any) {
+    async create(data: UserDTO) {
         const users = await this.userRepository.create(data);
         await this.userRepository.save(users);
     }
