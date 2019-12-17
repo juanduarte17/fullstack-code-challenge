@@ -17,10 +17,13 @@ export class ProductEntity {
 
     @Column({
         type: 'bytea',
-        nullable: true
+        nullable: true,
     })
     image: string;
 
-    @ManyToOne(type => UserEntity, user => user.products)
+    @ManyToOne(
+        type => UserEntity,
+        user => user.products,
+    )
     owner: UserEntity;
 }

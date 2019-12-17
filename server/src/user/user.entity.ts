@@ -1,8 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn, OneToMany, BeforeInsert } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    PrimaryColumn,
+    OneToMany,
+    BeforeInsert,
+} from 'typeorm';
 import { ProductEntity } from 'src/product/product.entity';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { UserResponseObject } from './user.dto';
+import { UserResponseObject } from './user.ro';
 
 @Entity('user')
 export class UserEntity {
@@ -24,18 +31,27 @@ export class UserEntity {
     @Column('text')
     password: string;
 
-    @OneToMany(type => ProductEntity, product => product.owner, { cascade: true })
+    @OneToMany(
+        type => ProductEntity,
+        product => product.owner,
+        { cascade: true },
+    )
     products: ProductEntity[];
 
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
-    } 
+    }
 
     toResponseObject(showToken: boolean = true) {
-        const {id, email, firstName, lastName, token} = this;
-        const responseObject: UserResponseObject = {id, email, firstName, lastName};
-        
+        const { id, email, firstName, lastName, token } = this;
+        const responseObject: UserResponseObject = {
+            id,
+            email,
+            firstName,
+            lastName,
+        };
+
         if (this.products) {
             responseObject.products = this.products;
         }
@@ -55,9 +71,10 @@ export class UserEntity {
         return jwt.sign(
             {
                 id,
-                email
-            }, process.env.SECRET,
-            { expiresIn: '7d'}
+                email,
+            },
+            process.env.SECRET,
+            { expiresIn: '7d' },
         );
     }
 }

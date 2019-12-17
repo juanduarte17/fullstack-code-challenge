@@ -1,7 +1,15 @@
-import { Controller, Logger, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
+import {
+    Controller,
+    Logger,
+    Get,
+    Post,
+    Body,
+    UseGuards,
+    Param,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDTO } from './user.dto';
-import { userSeedData } from './user-seed-data'
+import { userSeedData } from './user-seed-data';
 import { AuthGuard } from 'src/shared/auth.guard';
 import { User } from './user.decorator';
 
@@ -42,8 +50,8 @@ export class UserController {
 
     private seedUsers(data: UserDTO[]) {
         Logger.log('Seeding users', 'UserController');
-        for (let user of data) {
+        for (const user of data) {
             this.userService.create(user);
-        }   
+        }
     }
 }

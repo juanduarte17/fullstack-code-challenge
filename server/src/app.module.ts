@@ -21,10 +21,10 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
             database: process.env.DB_NAME,
             entities: [UserEntity, ProductEntity],
             synchronize: true,
-            logging: true
+            logging: true,
         }),
         ProductModule,
-        UserModule
+        UserModule,
     ],
     controllers: [AppController],
     providers: [
@@ -36,7 +36,7 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
             provide: APP_INTERCEPTOR,
             useClass: LoggingInterceptor,
         },
-        AppService
+        AppService,
     ],
 })
 export class AppModule {}

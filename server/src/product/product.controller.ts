@@ -1,13 +1,14 @@
-import { 
-    Controller, 
-    Get, 
-    Put, 
-    Post, 
-    Delete, 
-    Body, 
-    Param, 
-    UsePipes, 
-    UseGuards } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Put,
+    Post,
+    Delete,
+    Body,
+    Param,
+    UsePipes,
+    UseGuards,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDTO } from './product.dto';
 import { ValidationPipe } from '../shared/validation.pipe';
@@ -46,7 +47,10 @@ export class ProductController {
     @Post(':id/image')
     @UseGuards(new AuthGuard())
     @UsePipes(new ValidationPipe())
-    updateProductImage(@Param('id') id: string, @Body() data: Partial<ProductDTO>) {
+    updateProductImage(
+        @Param('id') id: string,
+        @Body() data: Partial<ProductDTO>,
+    ) {
         return this.productService.update(id, data);
     }
 

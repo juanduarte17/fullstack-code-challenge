@@ -8,101 +8,115 @@ import { ProductEntity } from 'src/product/product.entity';
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(UserEntity) 
+        @InjectRepository(UserEntity)
         private userRepository: Repository<UserEntity>,
         @InjectRepository(ProductEntity)
-        private productRepository: Repository<ProductEntity>
-        ) {}
-    
+        private productRepository: Repository<ProductEntity>,
+    ) {}
+
     async create(data: UserDTO) {
-        let userExist = await this.userRepository.findOne({
+        const userExist = await this.userRepository.findOne({
             where: { email: data.email },
         });
         if (!userExist) {
             let user = await this.userRepository.create(data);
             user = await this.userRepository.save(user);
-            Logger.log(`User ${user.firstName} ${user.lastName} created`, 'UserService: create()');
+            Logger.log(
+                `User ${user.firstName} ${user.lastName} created`,
+                'UserService: create()',
+            );
         } else {
-            Logger.error('User already exist', '','UserService: create()');
-        }  
+            Logger.error('User already exist', '', 'UserService: create()');
+        }
     }
 
     async showAll() {
-        const users = await this.userRepository.find({relations: ['products']});
+        const users = await this.userRepository.find({
+            relations: ['products'],
+        });
         return users.map(user => user.toResponseObject(false));
     }
 
     async getProducts(userID: string) {
-        const user = await this.userRepository.findOne({ 
+        const user = await this.userRepository.findOne({
             where: { id: userID },
-            relations: ['products']
+            relations: ['products'],
         });
         return user.toResponseObject(false).products;
     }
 
     async attach(userID: string, productID: string) {
-        const user = await this.userRepository.findOne({ 
+        const user = await this.userRepository.findOne({
             where: { id: userID },
-            relations: ['products']
+            relations: ['products'],
         });
-        const product = await this.productRepository.findOne(
-            { where: { id: productID },
-            relations: ['owner']
+        const product = await this.productRepository.findOne({
+            where: { id: productID },
+            relations: ['owner'],
         });
 
         if (!product) {
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
-        } 
+        }
 
         if (product.owner) {
-            throw new HttpException('Product is already owned', HttpStatus.FORBIDDEN);
+            throw new HttpException(
+                'Product is already owned',
+                HttpStatus.FORBIDDEN,
+            );
         }
         product.owner = user;
         await this.productRepository.update({ id: productID }, product);
 
-        // to avoid circular dependency 
-        delete  product.owner;
+        // to avoid circular dependency
+        delete product.owner;
 
         user.products.push(product);
         return user.toResponseObject();
     }
 
     async deattach(userID: string, productID: string) {
-        const user = await this.userRepository.findOne({ 
+        const user = await this.userRepository.findOne({
             where: { id: userID },
-            relations: ['products']
+            relations: ['products'],
         });
-        const product = await this.productRepository.findOne(
-            { where: { id: productID },
-            relations: ['owner']
+        const product = await this.productRepository.findOne({
+            where: { id: productID },
+            relations: ['owner'],
         });
 
         if (!product.owner) {
             throw new HttpException('Product not owned', HttpStatus.NOT_FOUND);
-        } 
+        }
 
         if (userID !== product.owner.id) {
-            throw new HttpException('Used logged in does not own this product', HttpStatus.FORBIDDEN);
+            throw new HttpException(
+                'Used logged in does not own this product',
+                HttpStatus.FORBIDDEN,
+            );
         }
 
         product.owner = null;
-        user.products = user.products.map(product => {
-            if (product.id !== productID) {
-                return product;
+        user.products = user.products.map(p => {
+            if (p.id !== productID) {
+                return p;
             }
         });
-        
+
         await this.productRepository.update({ id: productID }, product);
         return user.toResponseObject();
     }
 
     async login(data: UserDTO) {
-        const {email, password } = data
-        let user = await this.userRepository.findOne({
+        const { email, password } = data;
+        const user = await this.userRepository.findOne({
             where: { email: data.email },
         });
         if (!user || !(await user.comparePassword(password))) {
-            throw new HttpException('Invalid username/password', HttpStatus.BAD_REQUEST);
+            throw new HttpException(
+                'Invalid username/password',
+                HttpStatus.BAD_REQUEST,
+            );
         }
 
         return user.toResponseObject();

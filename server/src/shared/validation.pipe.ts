@@ -4,10 +4,10 @@ import {
     PipeTransform,
     HttpException,
     HttpStatus,
-  } from '@nestjs/common';
+} from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-  
+
 @Injectable()
 export class ValidationPipe implements PipeTransform {
     async transform(value: any, metadata: ArgumentMetadata) {
@@ -40,8 +40,10 @@ export class ValidationPipe implements PipeTransform {
     private formatErrors(errors: any[]) {
         return errors
             .map(err => {
-                for (let property in err.constraints) {
-                    return err.constraints[property];
+                for (const property in err.constraints) {
+                    if (err.constraints.hasOwnProperty(property)) {
+                        return err.constraints[property];
+                    }
                 }
             })
             .join(', ');
