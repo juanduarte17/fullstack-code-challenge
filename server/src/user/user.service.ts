@@ -3,7 +3,7 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO } from './user.dto';
-import { ProductEntity } from 'src/product/product.entity';
+import { ProductEntity } from '../product/product.entity';
 
 @Injectable()
 export class UserService {
@@ -19,7 +19,7 @@ export class UserService {
             where: { email: data.email },
         });
         if (!userExist) {
-            let user = await this.userRepository.create(data);
+            let user = this.userRepository.create(data);
             user = await this.userRepository.save(user);
             Logger.log(
                 `User ${user.firstName} ${user.lastName} created`,
@@ -97,7 +97,7 @@ export class UserService {
         }
 
         product.owner = null;
-        user.products = user.products.map(p => {
+        user.products = user.products.filter(p => {
             if (p.id !== productID) {
                 return p;
             }
@@ -110,7 +110,7 @@ export class UserService {
     async login(data: UserDTO) {
         const { email, password } = data;
         const user = await this.userRepository.findOne({
-            where: { email: data.email },
+            where: { email: email },
         });
         if (!user || !(await user.comparePassword(password))) {
             throw new HttpException(

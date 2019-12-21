@@ -1,4 +1,4 @@
-import { ProductEntity } from 'src/product/product.entity';
+import { ProductEntity } from '../product/product.entity';
 
 export class UserResponseObject {
     id: string;

@@ -6,7 +6,7 @@ import {
     OneToMany,
     BeforeInsert,
 } from 'typeorm';
-import { ProductEntity } from 'src/product/product.entity';
+import { ProductEntity } from '../product/product.entity';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { UserResponseObject } from './user.ro';

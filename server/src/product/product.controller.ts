@@ -12,9 +12,9 @@ import {
 import { ProductService } from './product.service';
 import { ProductDTO } from './product.dto';
 import { ValidationPipe } from '../shared/validation.pipe';
-import { AuthGuard } from 'src/shared/auth.guard';
+import { AuthGuard } from '../shared/auth.guard';
 
-@Controller('api/product')
+@Controller('api/products')
 export class ProductController {
     constructor(private productService: ProductService) {}
 
@@ -44,7 +44,7 @@ export class ProductController {
         return this.productService.update(id, data);
     }
 
-    @Post(':id/image')
+    @Post(':id/images')
     @UseGuards(new AuthGuard())
     @UsePipes(new ValidationPipe())
     updateProductImage(

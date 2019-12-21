@@ -21,6 +21,26 @@ sudo docker-compose up
 sudo docker-compose down
 ```
 
+### Routes
+- Add product
+    - POST /api/products
+- Update product
+    - PUT /api/products
+- Delete product
+    - DELETE /api/products
+- Get product
+    - GET /api/products/:id
+- Upload product image
+    - POST /api/products/:id/images
+- Get list of all products
+    - GET /api/products
+- Attach product to requesting user
+    - POST /api/users/products/:id
+- Remove product from requesting user
+    - DELETE /api/users/products/:id
+- List products attached to requesting user
+    - GET /api/users/products
+
 # Code Challenge
 You have 48 hours to build a simple RESTful API. The API must be written in Node.js, and you may use any tools that you would like (frameworks, packages, etc.).
 

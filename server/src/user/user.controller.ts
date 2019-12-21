@@ -6,17 +6,20 @@ import {
     Body,
     UseGuards,
     Param,
+    Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDTO } from './user.dto';
 import { userSeedData } from './user-seed-data';
-import { AuthGuard } from 'src/shared/auth.guard';
+import { AuthGuard } from '../shared/auth.guard';
 import { User } from './user.decorator';
 
 @Controller()
 export class UserController {
     constructor(private userService: UserService) {
-        this.seedUsers(userSeedData);
+        if (process.env.IS_SEEDING_USERS === 'true') {
+            this.seedUsers(userSeedData);
+        }
     }
 
     @Get('api/users')
@@ -25,19 +28,19 @@ export class UserController {
         return this.userService.showAll();
     }
 
-    @Get('api/user/products')
+    @Get('api/users/products')
     @UseGuards(new AuthGuard())
     getUserProducts(@User('id') userID) {
         return this.userService.getProducts(userID);
     }
 
-    @Post('api/user/attach/:id')
+    @Post('api/users/products/:id')
     @UseGuards(new AuthGuard())
     attachProduct(@User('id') userID, @Param('id') id: string) {
         return this.userService.attach(userID, id);
     }
 
-    @Post('api/user/deattach/:id')
+    @Delete('api/users/products/:id')
     @UseGuards(new AuthGuard())
     deattachProduct(@User('id') userID, @Param('id') id: string) {
         return this.userService.deattach(userID, id);
