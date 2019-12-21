@@ -24,6 +24,7 @@ services:
             - DB_USER=${DB_ADMIN_USER}
             - DB_PASSWORD=${DB_ADMIN_PASSWORD}
             - SECRET=${SECRET}
+            - IS_SEEDING_USERS=${IS_SEEDING_USERS}
         ports:
             - "3000:3000"
         volumes:
